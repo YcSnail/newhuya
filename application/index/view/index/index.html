@@ -1,0 +1,122 @@
+{include file="public/header" /}
+
+<link rel="stylesheet" href="static/font-awesome/css/font-awesome.css">
+
+<style>
+
+    .human-title{
+        font-size: 20px;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .human{
+        height: 300px;
+        text-align: center;
+    }
+
+    .human img{
+        border-radius: 10px;
+        width: 80%;
+        height: 100%;
+        display: inline;
+        margin-left: 10%;
+        max-width: 300px;
+    }
+
+    .human-note{
+        text-align: center;
+    }
+
+    .tag{
+        width: 80px;
+        margin: 4px 4px;
+        background-color: #2b73ff;
+        padding: 4px;
+        border-radius: 6px;
+        color: #fff;
+        display: inline-block;
+    }
+
+</style>
+
+
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 25px 0 0 0;">
+
+        <div class="layui-row">
+            <div class="layui-col-md2 layui-col-xs10 layui-col-sm12">
+                <div class="layui-card">
+                    <!--<div class="layui-card-header"><p class="human-title">LongDD</p></div>-->
+                    <div class="layui-card-body">
+                        <p class="human"><img class="human-img" src="static/images/huangxiang.jpg" alt=""></p>
+                        <div class="human-note">
+                            <p class="human-title">LongDD</p>
+                            <p class="tags">
+                                <span class="tag">远古巨鱼</span>
+                                <span class="tag">华文</span>
+                                <span class="tag">小腿</span>
+                                <span class="tag">眼少</span>
+                            </p>
+                            <p class="user">
+
+                                <i>layui-icon-rate</i>
+                                <i>layui-icon-login-weibo</i>
+                                <i>layui-icon-video</i>
+
+
+
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md6 layui-col-xs12 layui-col-sm12">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用户名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="title" autocomplete="off" placeholder="请输入名称" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-normal">查询</button>
+                        </div>
+                    </div>
+
+
+
+
+
+                </form>
+
+            </div>
+
+
+            <div class="layui-col-md2 layui-col-xs12 layui-col-sm12">
+                <p>dd</p>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+<script>
+    //JavaScript代码区域
+    layui.use(['element','form'], function () {
+        var element = layui.element
+            ,form = layer.form;
+
+    });
+</script>
+</body>
+</html>
