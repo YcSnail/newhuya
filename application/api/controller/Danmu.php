@@ -14,16 +14,91 @@ class Danmu extends Controller {
 
     public function add(){
 
-        $json = '[{"username":"real999111","content":"龙神牛逼，lssb","createtime":1540825809},{"username":"晚风","content":"没控制出纷争","createtime":1540825810},{"username":"专注√","content":"主要是前期先知发条节奏太差","createtime":1540825811},{"username":"robben","content":"现在知道菜了吧，英雄勺不会玩核玩啥单一征召呢","createtime":1540825811},{"username":"飞鹰","content":"缺龙心啊","createtime":1540825811},{"username":"空空如也","content":"1","createtime":1540825812},{"username":"木子","content":"不是说好了三红随便喷","createtime":1540825812},{"username":"德雷克","content":"不懂你们喷啥，你们没看懂吗，就是阵容打不过","createtime":1540825813},{"username":"空空如也","content":"1","createtime":1540825813},{"username":"Graham0","content":"守护全世界最可爱的龙公明哥哥","createtime":1540825813}]';
+        //
+        $json  = input('post.');
+        if (!$json){
+            ajaxRes(-1,'data is empty!');
+        }
 
-        // 获取当前用户ID
+        $dataArr = json_decode($json,true);
 
+        $setArr = [];
 
+        //1.移除重复弹幕
+        $dataArr = $this->a_array_unique($dataArr);
+        $UserModel = model('User');
+        file_put_contents('c.log',count($dataArr));
 
+        for ($i=0;$i<count($dataArr);$i++){
 
+            file_put_contents('d.log',$dataArr[$i]['content']);
 
+            $content = $this->checkDanmu($dataArr[$i]['content']);
+            file_put_contents('e.log',$content);
 
+            if ($content == false){
+                continue;
+            }
+
+            $tmpArr = [];
+            // 弹幕过滤检测
+            $tmpArr['content'] = $content;
+            $tmpArr['userid'] = $UserModel->getUserId($dataArr[$i]['username']);
+            $tmpArr['create_time'] = $dataArr[$i]['createtime'];
+            $setArr[] = $tmpArr;
+        }
+
+        if ($setArr){
+
+            $danmuModel = model('Danmu');
+            $danmuRes = $danmuModel->addDanmu($setArr);
+            file_put_contents('e.log',$danmuRes);
+
+            if ($danmuRes){
+                file_put_contents('ok.log',$danmuRes);
+                ajaxRes(0,'ok');
+            }
+
+        }
+        file_put_contents('G.log','');
+
+        ajaxRes(-1,'insert Error');
     }
 
+
+    private function checkDanmu($content){
+
+        $checkArr = ['分享了直播间','hahaha','哈哈哈','2333','6666','牛逼','收','高能预警','前方高能反应','????','....','。。。。'];
+//        $checkArr = ['牛逼'];
+
+        $resCount = $content;
+        file_put_contents('d.log','d');
+
+        for ($i=0;$i<count($checkArr);$i++){
+
+            if (strstr($content,$checkArr[$i]) !== false){
+                $resCount = false;
+                break;
+            }
+
+
+        }
+
+        return $resCount;
+    }
+
+    //二维数组去掉重复值
+    private function a_array_unique($array){
+        $out = array();
+
+        foreach ($array as $key=>$value) {
+            if (!in_array($value, $out)){
+                $out[$key] = $value;
+            }
+        }
+
+        $out = array_values($out);
+        return $out;
+    }
 
 }

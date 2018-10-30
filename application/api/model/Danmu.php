@@ -6,9 +6,19 @@
 // +----------------------------------------------------------------------
 // | Date: 2018/10/29 Time: 23:13
 // +----------------------------------------------------------------------
-namespace app\index\model;
+namespace app\api\model;
 use think\Model;
 
 class Danmu extends Model{
+
+    // 设置当前模型对应的完整数据表名称
+    protected $table = 'hy_danmu';
+
+    public function addDanmu($danmuArr){
+
+        $res = Danmu::saveAll($danmuArr);
+
+        return $res;
+    }
 
 }
