@@ -14,27 +14,27 @@ class Danmu extends Controller {
 
     public function add(){
 
-        //
-        $json  = input('post.');
-        if (!$json){
+        $dataArr  = input('post.');
+
+        if (!$dataArr){
             ajaxRes(-1,'data is empty!');
         }
 
-        $dataArr = json_decode($json,true);
+        if (!isset($dataArr['danmu'])){
+            ajaxRes(-1,'danmu is empty!');
+        }
+
+        $danmuArr = $dataArr['danmu'];
 
         $setArr = [];
 
         //1.移除重复弹幕
-        $dataArr = $this->a_array_unique($dataArr);
+        $dataArr = $this->a_array_unique($danmuArr);
         $UserModel = model('User');
-        file_put_contents('c.log',count($dataArr));
 
         for ($i=0;$i<count($dataArr);$i++){
 
-            file_put_contents('d.log',$dataArr[$i]['content']);
-
             $content = $this->checkDanmu($dataArr[$i]['content']);
-            file_put_contents('e.log',$content);
 
             if ($content == false){
                 continue;
@@ -52,27 +52,31 @@ class Danmu extends Controller {
 
             $danmuModel = model('Danmu');
             $danmuRes = $danmuModel->addDanmu($setArr);
-            file_put_contents('e.log',$danmuRes);
-
             if ($danmuRes){
-                file_put_contents('ok.log',$danmuRes);
                 ajaxRes(0,'ok');
             }
 
         }
-        file_put_contents('G.log','');
 
         ajaxRes(-1,'insert Error');
     }
 
 
+    /**
+     * 检查过滤弹幕
+     * @param $content
+     * @return bool
+     */
     private function checkDanmu($content){
 
+        if (strlen($content) <=3){
+            return false;
+        }
+
+
         $checkArr = ['分享了直播间','hahaha','哈哈哈','2333','6666','牛逼','收','高能预警','前方高能反应','????','....','。。。。'];
-//        $checkArr = ['牛逼'];
 
         $resCount = $content;
-        file_put_contents('d.log','d');
 
         for ($i=0;$i<count($checkArr);$i++){
 
@@ -80,7 +84,6 @@ class Danmu extends Controller {
                 $resCount = false;
                 break;
             }
-
 
         }
 
@@ -99,6 +102,24 @@ class Danmu extends Controller {
 
         $out = array_values($out);
         return $out;
+    }
+
+
+
+    /**
+     * 判断字符串是否为 Json 格式
+     *
+     * @param  string     $data  Json 字符串
+     * @param  bool       $assoc 是否返回关联数组。默认返回对象
+     *
+     * @return bool|array 成功返回转换后的对象或数组，失败返回 false
+     */
+    private function isJson($data = '', $assoc = false) {
+        $data = json_decode($data, $assoc);
+        if ($data && (is_object($data)) || (is_array($data) && !empty(current($data)))) {
+            return $data;
+        }
+        return false;
     }
 
 }
