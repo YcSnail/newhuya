@@ -37,21 +37,37 @@
         display: inline-block;
     }
 
-</style>
+    .div-search{
+        width: 80%;
+    }
 
+    .user{
+        margin: 0 10px;
+    }
+
+    .layui-card-body{
+        border-radius: 10px;
+    }
+
+    .layui-form{
+        text-align: center;
+    }
+
+</style>
 
 <div class="layui-body">
     <!-- 内容主体区域 -->
     <div style="padding: 25px 0 0 0;">
 
         <div class="layui-row">
-            <div class="layui-col-md2 layui-col-xs12 layui-col-sm12">
+            <div class="layui-col-md2 layui-col-xs12 layui-col-sm12 user">
                 <div class="layui-card">
                     <!--<div class="layui-card-header"><p class="human-title">LongDD</p></div>-->
                     <div class="layui-card-body">
                         <p class="human"><img class="human-img" src="static/images/huangxiang.jpg" alt=""></p>
                         <div class="human-note">
                             <p class="human-title">LongDD</p>
+                            <p class="human-title">黄翔</p>
                             <p class="tags">
                                 <span class="tag">远古巨鱼</span>
                                 <span class="tag">华文</span>
@@ -73,31 +89,22 @@
                 </div>
             </div>
 
-            <div class="layui-col-md10 layui-col-xs12 layui-col-sm12">
-                <form class="layui-form" action="">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">用户名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" autocomplete="off" placeholder="请输入名称" class="layui-input">
-                        </div>
+            <div class="layui-col-md9 layui-col-xs12 layui-col-sm12">
+                <form class="layui-form">
+
+                    <div class="layui-inline" style="width: 120px">
+                        <select name="type" id="type" lay-filter="aihao">
+                            <option value="icp">用户名</option>
+                            <option value="aq">弹幕</option>
+                        </select>
                     </div>
 
-                    <div class="layui-form-item">
-                        <label class="layui-form-label"></label>
-                        <div class="layui-input-block">
-                            <button class="layui-btn layui-btn-normal">查询</button>
-                        </div>
+                    <div class="layui-inline" style="width: 600px">
+                        <input id="vcode" name="vcode" type="hidden">
+                        <input placeholder="输入关键字" name="domain" autocomplete="off" id="domain" class="layui-input">
                     </div>
 
-                    <ul>
-                        <li>
-
-                            <p>2018-08-31 16:42:03 张三  6666666</p>
-
-                        </li>
-                    </ul>
-
-
+                    <button type="button" class="layui-btn" id="start"><i class="layui-icon layui-icon-search"></i></button>
 
 
                 </form>
