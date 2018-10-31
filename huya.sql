@@ -1,46 +1,43 @@
 /*
- Navicat Premium Data Transfer
+Navicat MySQL Data Transfer
 
- Source Server         : 本地
- Source Server Type    : MySQL
- Source Server Version : 50553
- Source Host           : localhost:3306
- Source Schema         : huya
+Source Server         : 本地
+Source Server Version : 50553
+Source Host           : localhost:3306
+Source Database       : huya
 
- Target Server Type    : MySQL
- Target Server Version : 50553
- File Encoding         : 65001
+Target Server Type    : MYSQL
+Target Server Version : 50553
+File Encoding         : 65001
 
- Date: 31/10/2018 03:27:14
+Date: 2018-10-31 17:28:18
 */
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for hy_danmu
 -- ----------------------------
 DROP TABLE IF EXISTS `hy_danmu`;
-CREATE TABLE `hy_danmu`  (
+CREATE TABLE `hy_danmu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(255) DEFAULT NULL,
-  `content` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `create_time` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `create_time` varchar(255) DEFAULT NULL,
+  `status` int(11) DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `username`(`userid`) USING BTREE,
-  INDEX `time`(`create_time`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 42 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  KEY `username` (`userid`) USING BTREE,
+  KEY `time` (`create_time`) USING BTREE
+) ENGINE=MyISAM AUTO_INCREMENT=5672 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Table structure for hy_user
 -- ----------------------------
 DROP TABLE IF EXISTS `hy_user`;
-CREATE TABLE `hy_user`  (
+CREATE TABLE `hy_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `sign` int(255) DEFAULT 0 COMMENT '标记次数',
-  `create_time` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `sign` int(255) DEFAULT '0' COMMENT '标记次数',
+  `create_time` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
-
-SET FOREIGN_KEY_CHECKS = 1;
+) ENGINE=InnoDB AUTO_INCREMENT=2896 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
