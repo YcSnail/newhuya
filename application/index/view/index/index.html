@@ -4,18 +4,28 @@
 
 <style>
 
-    .human-title{
+    .items{
+        margin-top: 25px;
+    }
+
+    .layui-card-body {
+        position: relative;
+        padding: 10px 15px 0 15px;
+        line-height: 24px;
+    }
+
+    .human-title {
         font-size: 20px;
         text-align: center;
         margin: 10px 0;
     }
 
-    .human{
+    .human {
         height: 300px;
         text-align: center;
     }
 
-    .human img{
+    .human img {
         border-radius: 10px;
         width: 90%;
         height: 100%;
@@ -23,105 +33,190 @@
         max-width: 300px;
     }
 
-    .human-note{
+    .human-note {
         text-align: center;
     }
 
-    .tag{
+    .tag {
         width: 80px;
         margin: 4px 4px;
         background-color: #2b73ff;
         padding: 4px;
-        border-radius: 6px;
+        border-radius: 10px;
         color: #fff;
         display: inline-block;
     }
 
-    .div-search{
+    .div-search {
         width: 80%;
     }
 
-    .user{
-        margin: 0 10px;
+    .user {
+        margin-left:20px;
+        max-width: 270px;
     }
 
-    .layui-card-body{
+    .user,.layui-card{
         border-radius: 10px;
     }
 
-    .layui-form{
+    .layui-form {
         text-align: center;
     }
+
+    .user-tags {
+        margin-top: 6px;
+        border-top: 1px solid #cccccc;
+        min-height: 46px;
+    }
+
+    .user-tags i {
+        font-size: 26px;
+        padding: 10px 8px;
+        line-height: 46px;
+    }
+
+    .danmu-content{
+        width: 80%;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 20px auto;
+    }
+
+    .danmu-content p,.danmu-content ul{
+        padding: 15px;
+        background-color: #ffffff;
+        margin: 10px 0;
+    }
+
+    .danmu-title{
+        text-align: center;
+    }
+
+    .danmu-list >li{
+        height: 60px;
+        line-height: 60px;
+        border-bottom: 1px solid #e9e9e9;
+    }
+
 
 </style>
 
 <div class="layui-body">
     <!-- 内容主体区域 -->
-    <div style="padding: 25px 0 0 0;">
-
-        <div class="layui-row">
-            <div class="layui-col-md2 layui-col-xs12 layui-col-sm12 user">
-                <div class="layui-card">
-                    <!--<div class="layui-card-header"><p class="human-title">LongDD</p></div>-->
-                    <div class="layui-card-body">
-                        <p class="human"><img class="human-img" src="static/images/huangxiang.jpg" alt=""></p>
-                        <div class="human-note">
-                            <p class="human-title">LongDD</p>
-                            <p class="human-title">黄翔</p>
-                            <p class="tags">
-                                <span class="tag">远古巨鱼</span>
-                                <span class="tag">华文</span>
-                                <span class="tag">小腿</span>
-                                <span class="tag">眼少</span>
-                            </p>
-                            <p class="user">
-
-                                <i>layui-icon-rate</i>
-                                <i>layui-icon-login-weibo</i>
-                                <i>layui-icon-video</i>
-
-
-
-                            </p>
-                        </div>
-
-                    </div>
+    <div class="layui-col-md2 layui-col-sm4 layui-col-xs12 user items">
+        <div class="layui-card">
+            <!--<div class="layui-card-header"><p class="human-title">LongDD</p></div>-->
+            <div class="layui-card-body">
+                <p class="human"><img class="human-img" src="static/images/huangxiang.jpg" alt=""></p>
+                <div class="human-note">
+                    <p class="human-title">LongDD</p>
+                    <p class="human-title">黄翔</p>
+                    <p class="tags">
+                        <span class="tag">远古巨鱼</span>
+                        <span class="tag">华文</span>
+                        <span class="tag">小腿</span>
+                        <span class="tag">眼少</span>
+                    </p>
+                    <p class="user-tags">
+                        <i class="layui-icon layui-icon-username" data-masges="关于我" data-href="https://baike.baidu.com/item/longdd/7872594"></i>
+                        <i class="layui-icon layui-icon-rate" data-masges="关注直播" data-href="http://www.huya.com/longdd"></i>
+                        <i class="layui-icon layui-icon-login-weibo" data-masges="新浪微博" data-href="https://www.weibo.com/longdd520"></i>
+                        <i class="layui-icon layui-icon-video" data-masges="查看相关视频" data-href="https://search.bilibili.com/all?keyword=%E9%BB%84%E7%BF%94%20longdd%20%E9%BE%99dd%20%E9%BE%99%E7%A5%9E&from_source=banner_search"></i>
+                    </p>
                 </div>
-            </div>
-
-            <div class="layui-col-md9 layui-col-xs12 layui-col-sm12">
-                <form class="layui-form">
-
-                    <div class="layui-inline" style="width: 120px">
-                        <select name="type" id="type" lay-filter="aihao">
-                            <option value="icp">用户名</option>
-                            <option value="aq">弹幕</option>
-                        </select>
-                    </div>
-
-                    <div class="layui-inline" style="width: 600px">
-                        <input id="vcode" name="vcode" type="hidden">
-                        <input placeholder="输入关键字" name="domain" autocomplete="off" id="domain" class="layui-input">
-                    </div>
-
-                    <button type="button" class="layui-btn" id="start"><i class="layui-icon layui-icon-search"></i></button>
-
-
-                </form>
 
             </div>
+        </div>
+    </div>
+
+    <div class="layui-col-md9 layui-col-sm8 layui-col-xs12 items">
+        <form class="layui-form">
+
+            <div class="layui-inline" style="width: 20%">
+                <select name="type" id="type" lay-filter="aihao">
+                    <option value="icp">用户名</option>
+                    <option value="aq">弹幕</option>
+                </select>
+            </div>
+
+            <div class="layui-inline" style="width: 50%">
+                <input id="vcode" name="vcode" type="hidden">
+                <input placeholder="输入关键字" name="domain" autocomplete="off" id="domain" class="layui-input">
+            </div>
+
+            <button style="width: 9%" type="button" class="layui-btn" id="start"><i class="layui-icon layui-icon-search"></i></button>
+
+        </form>
+
+        <div class="danmu-content">
+
+            <p class="danmu-title">
+                当前用户标记次数: 10
+            </p>
+
+            <ul class="danmu-list">
+                <li>
+                    <span>2018-11-01 11:15:30</span>
+                    <span>张三</span>
+                    <span>厉害厉害</span>
+                </li>
+                <li>
+                    <span>2018-11-01 11:15:30</span>
+                    <span>张三</span>
+                    <span>厉害厉害</span>
+                </li>
+                <li>
+                    <span>2018-11-01 11:15:30</span>
+                    <span>张三</span>
+                    <span>厉害厉害</span>
+                </li>
+                <li>
+                    <span>2018-11-01 11:15:30</span>
+                    <span>张三</span>
+                    <span>厉害厉害</span>
+                </li>
+            </ul>
 
         </div>
 
+        
+        
     </div>
+
+
 </div>
 
 </div>
 <script>
     //JavaScript代码区域
-    layui.use(['element','form'], function () {
+    layui.use(['element', 'form', 'layer'], function () {
         var element = layui.element
-            ,form = layer.form;
+            , form = layui.form
+            , layer = layui.layer;
+
+        $().ready(function () {
+
+            $(".user-tags > .layui-icon").mouseover(function () {
+
+                var masage = $(this).data('masges');
+
+                layer.tips(masage, $(this), {
+                    tips: [3, '#009688'],
+                    time: 1000
+                });
+
+            });
+
+            $(".user-tags > .layui-icon").click(function () {
+
+                var href = $(this).data('href');
+                window.open(href);
+            })
+
+
+        });
+
 
     });
 </script>
