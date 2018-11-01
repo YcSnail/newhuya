@@ -99,6 +99,20 @@
         border-bottom: 1px solid #e9e9e9;
     }
 
+    .danmu-span{
+        margin: 0 4px;
+        overflow-x: scroll;
+    }
+
+    .danmu-time{
+        color: #000;
+    }
+    .danmu-name{
+        color: #000;
+    }
+    .danmu-text{
+        color: #2b73ff;
+    }
 
 </style>
 
@@ -134,48 +148,36 @@
         <form class="layui-form">
 
             <div class="layui-inline" style="width: 20%">
-                <select name="type" id="type" lay-filter="aihao">
-                    <option value="icp">用户名</option>
-                    <option value="aq">弹幕</option>
+                <select name="type" id="type">
+                    <option value="user">用户名</option>
+                    <!--<option value="danmu">弹幕</option>-->
                 </select>
             </div>
 
             <div class="layui-inline" style="width: 50%">
-                <input id="vcode" name="vcode" type="hidden">
-                <input placeholder="输入关键字" name="domain" autocomplete="off" id="domain" class="layui-input">
+                <input type="text" name="search" lay-verify="required" placeholder="输入关键字" autocomplete="off" class="layui-input">
             </div>
 
-            <button style="width: 9%" type="button" class="layui-btn" id="start"><i class="layui-icon layui-icon-search"></i></button>
+            <button style="width: 9%" type="button" class="layui-btn btn-submit" id="start"  lay-submit="" lay-filter="demo1"><i class="layui-icon layui-icon-search"></i></button>
 
         </form>
 
-        <div class="danmu-content">
+        <div class="danmu-content div-none">
 
-            <p class="danmu-title">
+            <p class="danmu-title div-none">
                 当前用户标记次数: 10
+            </p>
+            <p class="danmu-title">
+                弹幕数: <span class="danmu-num">0</span>
             </p>
 
             <ul class="danmu-list">
-                <li>
-                    <span>2018-11-01 11:15:30</span>
-                    <span>张三</span>
-                    <span>厉害厉害</span>
-                </li>
-                <li>
-                    <span>2018-11-01 11:15:30</span>
-                    <span>张三</span>
-                    <span>厉害厉害</span>
-                </li>
-                <li>
-                    <span>2018-11-01 11:15:30</span>
-                    <span>张三</span>
-                    <span>厉害厉害</span>
-                </li>
-                <li>
-                    <span>2018-11-01 11:15:30</span>
-                    <span>张三</span>
-                    <span>厉害厉害</span>
-                </li>
+                <!--<li>-->
+                    <!--<span class="danmu-span danmu-time">2018-11-01 11:15:30</span>-->
+                    <!--<span class="danmu-span danmu-name">张三</span>-->
+                    <!--<span class="danmu-span danmu-text">厉害厉害</span>-->
+                <!--</li>-->
+
             </ul>
 
         </div>
@@ -195,7 +197,67 @@
             , form = layui.form
             , layer = layui.layer;
 
+        //自定义验证规则
+        form.verify({
+            required: function(value){
+                if(value.length == 0){
+                    return '输入要查的东西啊! 笨比!!!';
+                }
+            }
+        });
+
         $().ready(function () {
+
+            // 查询获取弹幕
+            //监听提交
+            form.on('submit(demo1)', function(data){
+                // 提交数据
+
+                var url = 'api/AdminDanmu/get';
+                var index = layer.load();
+                $.post(
+                    url,
+                    data.field,
+                    function(result){
+                        layer.close(index);
+                        if (result.code == 0){
+                            setList(result.message);
+                        }else{
+                            layer.msg(result.message);
+
+                        }
+
+                    },
+                    'json'
+                );
+
+            });
+
+
+            function setList(data){
+
+                var list = '';
+
+                for (var i=0;i<data.length;i++){
+
+                    list +=
+                        '<li>' +
+                        '    <span class="danmu-span danmu-time">'+data[i]['create_time']+'</span>' +
+                        '    <span class="danmu-span danmu-name">'+data[i]['username']+':</span>' +
+                        '    <span class="danmu-span danmu-text">'+data[i]['content']+'</span>' +
+                        '</li>';
+                }
+
+                if (list ==''){
+                    list = '<li>暂未记录当前用户弹幕!</li>';
+                }
+
+                $('.danmu-num').text(data.length);
+
+                $('.danmu-content').removeClass('div-none');
+                $('.danmu-list').empty().append(list);
+            }
+
 
             $(".user-tags > .layui-icon").mouseover(function () {
 
