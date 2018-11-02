@@ -29,7 +29,7 @@ class Danmu extends Controller {
         $setArr = [];
 
         //1.移除重复弹幕
-        $dataArr = $this->a_array_unique($danmuArr);
+        $dataArr = $this->more_array_unique($danmuArr);
         $UserModel = model('User');
 
         for ($i=0;$i<count($dataArr);$i++){
@@ -74,7 +74,7 @@ class Danmu extends Controller {
         }
 
 
-        $checkArr = ['分享了直播间','hahaha','哈哈哈','2333','6666','牛逼','收','高能预警','前方高能反应','????','....','。。。。'];
+        $checkArr = ['分享了直播间','hahaha','哈哈哈','2333','6666','牛逼','收','高能预警','前方高能反应','????','....','。。。。','支付宝','QQ','qq'];
 
         $resCount = $content;
 
@@ -90,18 +90,55 @@ class Danmu extends Controller {
         return $resCount;
     }
 
-    //二维数组去掉重复值
-    private function a_array_unique($array){
-        $out = array();
+    // 二维数组去重
 
-        foreach ($array as $key=>$value) {
-            if (!in_array($value, $out)){
-                $out[$key] = $value;
-            }
+    /**
+     * @param array $arr
+     */
+
+    private function more_array_unique($arr=array()){
+
+        $danmuArrRes = [];
+        if (!is_array($arr)){
+            ajaxRes(-1,'danmu is not array');
+        }
+         // 循环获取所有数据
+         foreach ($arr as $itemArr) {
+             $tmpArr = [];
+
+             $tmpArr['username'] = $itemArr['username'];
+             $tmpArr['content'] = $itemArr['content'];
+             $tmpArr['createtime'] = $itemArr['createtime'];
+
+             $checkDanmu = $this->schechDanmu($tmpArr['username'],$danmuArrRes,'username');
+
+             // 判断是否内容重复
+             // 循环获取  用户和内容  保存在新数组
+
+             if ($checkDanmu === false){
+                 $danmuArrRes[] = $tmpArr;
+
+             }else
+                 if ($danmuArrRes[$checkDanmu]['content'] != $tmpArr['content']){
+
+                 // 含有重复值
+                 //再次检查 判断是否用户重复
+                 $danmuArrRes[] = $tmpArr;
+             }
+
+         }
+         return $danmuArrRes;
+    }
+
+    private function schechDanmu($content,$danmuArr,$type = 'username'){
+
+        if (!$danmuArr){
+            return false;
         }
 
-        $out = array_values($out);
-        return $out;
+        $checkRes = array_search($content, array_column($danmuArr, $type));
+        return $checkRes;
     }
+
 
 }
