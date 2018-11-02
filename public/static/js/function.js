@@ -70,3 +70,20 @@ function timestampToDate (unixtimestamp){
         + minute.substring(minute.length-2, minute.length) + ":"
         + second.substring(second.length-2, second.length);
 }
+
+
+/**
+ * 绑定回车
+ * @param key 要绑点的类
+ * @param bind 绑定的类
+ *
+ */
+function addKeyUp(key,bind) {
+
+    $(key).keyup(function(event){
+        if(event.keyCode ==13){
+            $(bind).click();
+        }
+    });
+
+}

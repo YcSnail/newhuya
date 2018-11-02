@@ -155,7 +155,7 @@
             </div>
 
             <div class="layui-inline" style="width: 50%">
-                <input type="text" name="search" lay-verify="required" placeholder="输入关键字" autocomplete="off" class="layui-input">
+                <input type="text" name="search" lay-verify="required" placeholder="输入关键字" autocomplete="off" class="layui-input search">
             </div>
 
             <button style="width: 9%" type="button" class="layui-btn btn-submit" id="start"  lay-submit="" lay-filter="demo1"><i class="layui-icon layui-icon-search"></i></button>
@@ -207,6 +207,9 @@
         });
 
         $().ready(function () {
+
+
+            addKeyUp('.search','#start');
 
             // 查询获取弹幕
             //监听提交
