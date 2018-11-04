@@ -1,0 +1,92 @@
+{include file="public/header" /}
+
+<style>
+
+    .layui-body{
+        margin-top: 20px;
+    }
+
+    .layui-input-block {
+        margin-left: 0;
+    }
+
+
+
+</style>
+
+
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>意见反馈</legend>
+    </fieldset>
+    <div class="layui-col-md8 layui-col-md-offset2 layui-col-sm4 layui-col-xs12 user items">
+
+        <form class="layui-form">
+            <div class="layui-form-item layui-form-text">
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入" name="suggestion" class="layui-textarea" lay-verify="required"></textarea>
+                </div>
+            </div>
+
+            <input type="hidden" name="__token__" value="{$token}" />
+
+            <div class="text-center">
+                <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'layer'], function () {
+        var element = layui.element
+            , form = layui.form
+            , layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            required: function (value) {
+                if (value.length == 0) {
+                    return '输入要反馈的东西啊! 笨比!!!';
+                }
+            }
+        });
+
+        $().ready(function () {
+
+
+            addKeyUp('.search', '#start');
+
+            // 查询获取弹幕
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                // 提交数据
+
+                var url = '/api/suggestion/add';
+                var index = layer.load('',{time: 5*1000});
+                $.post(
+                    url,
+                    data.field,
+                    function (result) {
+                        layer.close(index);
+
+                        layer.msg(result.message);
+                    },
+                    'json'
+                );
+
+            });
+
+
+        });
+
+
+    });
+</script>
+
+
+{include file="public/footer" /}
