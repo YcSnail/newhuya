@@ -94,9 +94,10 @@
     }
 
     .danmu-list >li{
-        height: 60px;
-        line-height: 60px;
+        height: 30px;
+        line-height: 30px;
         border-bottom: 1px solid #e9e9e9;
+        overflow: auto;
     }
 
     .danmu-span{
@@ -113,6 +114,27 @@
     .danmu-text{
         color: #2b73ff;
     }
+
+    #toTop {
+        position: fixed;
+        cursor: pointer;
+        text-align: center;
+        width: 60px;
+        height: 60px;
+        color: #fff;
+        font-size: 40px;
+        line-height: 60px;
+        background: #2b73ff;
+        border-radius: 50%;
+        -webkit-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out;
+        opacity: 1;
+        pointer-events: none;
+        right: 4%;
+        bottom: 60px;
+        display: none;
+    }
+
 
 </style>
 
@@ -180,20 +202,22 @@
 
             </ul>
 
+            <div id="danmu-page"></div>
+
         </div>
 
-        
-        
-    </div>
+        <!--<div id="toTop" class="layui-icon layui-icon-up"></div>-->
 
+    </div>
 
 </div>
 
 <script>
     //JavaScript代码区域
-    layui.use(['element', 'form', 'layer'], function () {
+    layui.use(['element', 'form', 'layer','laypage'], function () {
         var element = layui.element
             , form = layui.form
+            , laypage = layui.laypage
             , layer = layui.layer;
 
         //自定义验证规则
@@ -207,6 +231,34 @@
 
         $().ready(function () {
 
+            var offset = 300,
+                //browser window scroll (in pixels) after which the "back to top" link opacity is reduced
+                //duration of the top scrolling animation (in ms)
+                scroll_top_duration = 700,
+                //grab the "back to top" link
+                $back_to_top = $('#toTop');
+
+            //hide or show the "back to top" link
+            $('.layui-body').scroll(function(){
+                ( $(this).scrollTop() > offset ) ? $back_to_top.fadeIn('fast') : $back_to_top.fadeOut('slow');
+            });
+
+            function goTop() {
+                $('.layui-body').animate({
+                        scrollTop: 0 ,
+                    }, scroll_top_duration
+                );
+            }
+
+            $('.layui-nav-item:eq(0)').addClass('layui-this');
+
+            // 每页数据
+            var pageNum = 50;
+            // 当前页
+            var nowPage = 0;
+            var search = {};
+            //  是否已经处在 分页器
+            var isPage = false;
 
             addKeyUp('.search','#start');
 
@@ -215,13 +267,24 @@
             form.on('submit(demo1)', function(data){
                 // 提交数据
 
-                var url = 'api/AdminDanmu/get';
-                var index = layer.load();
+                search = data.field;
+                getDanmu();
+            });
+
+            function getDanmu() {
+
+                var url = '/api/AdminDanmu/get';
+                maskShow();
+
+                search['page'] = nowPage;
+                search['pageNum'] = pageNum;
+
                 $.post(
                     url,
-                    data.field,
+                    search,
                     function(result){
-                        layer.close(index);
+                        maskClose();
+
                         if (result.code == 0){
                             setList(result.message);
                         }else{
@@ -233,20 +296,23 @@
                     'json'
                 );
 
-            });
+
+            }
 
 
             function setList(data){
 
                 var list = '';
 
-                for (var i=0;i<data.length;i++){
+                var danmuList = data.data;
+
+                for (var i=0;i<danmuList.length;i++){
 
                     list +=
                         '<li>' +
-                        '    <span class="danmu-span danmu-time">'+data[i]['create_time']+'</span>' +
-                        '    <span class="danmu-span danmu-name">'+data[i]['username']+':</span>' +
-                        '    <span class="danmu-span danmu-text">'+data[i]['content']+'</span>' +
+                        '    <span class="danmu-span danmu-time">'+danmuList[i]['create_time']+'</span>' +
+                        '    <span class="danmu-span danmu-name">'+danmuList[i]['username']+':</span>' +
+                        '    <span class="danmu-span danmu-text">'+danmuList[i]['content']+'</span>' +
                         '</li>';
                 }
 
@@ -254,11 +320,51 @@
                     list = '<li>暂未记录当前用户弹幕!</li>';
                 }
 
-                $('.danmu-num').text(data.length);
+                $('.danmu-num').text(data.total);
 
                 $('.danmu-content').removeClass('div-none');
                 $('.danmu-list').empty().append(list);
+
+                if (!isPage){
+                    setpage(data);
+                }
+
             }
+
+            function setpage(data){
+
+                isPage = true;
+
+                // 分页数据
+                laypage.render({
+                    elem: 'danmu-page' //注意，这里的 test1 是 ID，不用加 # 号
+                    ,count: data.total //数据总数，从服务端得到
+                    ,limit:pageNum
+                    ,limits:[20,50,100]
+                    ,groups:5
+                    ,prev:'<'
+                    ,next:'>'
+                    ,first:'首页'
+                    ,last:'末页'
+                    ,layout:['prev','page','next','limit']
+                    ,jump: function(obj, first){
+                        //obj包含了当前分页的所有参数，比如：
+
+                        //首次不执行
+                        if(!first){
+                            //do something
+                            nowPage = obj.curr;
+                            pageNum = obj.limit;
+                            getDanmu();
+                            goTop();
+                        }
+                    }
+
+                });
+
+            }
+
+
 
 
             $(".user-tags > .layui-icon").mouseover(function () {
@@ -280,6 +386,19 @@
 
 
         });
+
+        function maskShow() {
+            var index = layer.load();
+
+            setTimeout(function(){
+                layer.close(index);
+            }, 5000);
+
+        }
+
+        function maskClose() {
+            layer.closeAll('loading');
+        }
 
 
     });

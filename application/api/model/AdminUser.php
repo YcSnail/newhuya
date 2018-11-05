@@ -11,7 +11,7 @@ use think\Model;
 
 class AdminUser extends Model{
 
-    public function getUser($userName){
+    public function getUser($userName,$pageNum,$page){
 
         $danmuList = User::where('username',$userName)
             ->where('d.status',0)
@@ -19,7 +19,9 @@ class AdminUser extends Model{
             ->join('danmu d','u.id = d.userid')
             ->field('u.username,d.content,d.create_time')
             ->order('create_time desc')
-            ->select();
+            ->page($page,$pageNum)
+            ->paginate($pageNum)
+            ->toArray();
 
         return $danmuList;
     }

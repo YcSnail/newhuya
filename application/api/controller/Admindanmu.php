@@ -20,7 +20,7 @@ class Admindanmu extends Controller {
         $dataArr  = input('post.');
 
         // 判断数据是否存在
-        if (!isset($dataArr['type']) || !isset($dataArr['search'])){
+        if (!isset($dataArr['type']) || !isset($dataArr['search']) || !isset($dataArr['page']) || !is_numeric ($dataArr['page'])){
             ajaxRes(-1,'非法请求!');
         }
 
@@ -34,9 +34,12 @@ class Admindanmu extends Controller {
         // 默认按用户处理
         $UserModel = model('AdminUser');
 
+        $page = $dataArr['page'];
+        $pageNum = $dataArr['pageNum'];
+
         if ($dataArr['type'] =='user'){
 
-            $danmuRes = $UserModel->getUser($dataArr['search']);
+            $danmuRes = $UserModel->getUser($dataArr['search'],$pageNum,$page);
 
         }
 
