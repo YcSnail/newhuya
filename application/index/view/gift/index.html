@@ -1,0 +1,38 @@
+{include file="public/header" /}
+
+
+<div class="layui-body" style="padding: 15px">
+    <!-- 内容主体区域 -->
+    <div class="layui-col-md2 layui-col-sm4 layui-col-xs12">
+
+        礼物榜单
+
+    </div>
+
+</div>
+
+<script>
+//JavaScript代码区域
+layui.use(['element', 'form', 'layer', 'laypage'], function () {
+    var element = layui.element
+        , form = layui.form
+        , laypage = layui.laypage
+        , layer = layui.layer;
+
+//自定义验证规则
+    form.verify({
+        required: function (value) {
+            if (value.length == 0) {
+                return '输入要查的东西啊! 笨比!!!';
+            }
+        }
+    });
+
+    $().ready(function () {
+
+
+    });
+});
+</script>
+
+{include file="public/footer" /}
