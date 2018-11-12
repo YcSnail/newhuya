@@ -17,6 +17,8 @@
  * @param string $msg
  */
 function ajaxRes($code, $msg = '保存成功'){
+    header('content-type:application/json;charset=utf-8');
+
     $arr = array(
         'code' => $code,
         'message' => $msg

@@ -16,10 +16,6 @@ class Danmu extends Controller {
 
         $dataArr  = input('post.');
 
-        $json = '{"gift":[{"id":"026f0af054af0126be36390b29ffba1b","username":"Angel\u2026","giftName":"\u864e\u7cae","count":"1","price":"0.1","createtime":"1542002521"},{"id":"026f0af054af0126be36390b29ffba1b","username":"Angel\u2026","giftName":"\u864e\u7cae","count":"1","price":"0.1","createtime":"1542002521"}]}';
-
-        $dataArr = json_decode($json,true);
-
         if (!$dataArr){
             ajaxRes(-1,'data is empty!');
         }
@@ -33,16 +29,16 @@ class Danmu extends Controller {
 
         $checkIdArr = [];
 
-
         $UserModel = model('User');
+        $giftModel = model('Gift');
 
         // 循环礼物列表
         for ($i=0;$i<count($giftArr);$i++) {
 
             // 检查ID是否重复
-//            if (in_array($giftArr[$i]['id'],$checkIdArr)){
-//                continue;
-//            }
+            if (in_array($giftArr[$i]['id'],$checkIdArr)){
+                continue;
+            }
 
             $checkId = $this->checkGiftId($giftArr[$i]['id']);
 
@@ -55,24 +51,27 @@ class Danmu extends Controller {
             $tmpArr['name'] = $giftArr[$i]['giftName'];
             $tmpArr['count'] = $giftArr[$i]['count'];
             $tmpArr['price'] = $giftArr[$i]['price'];
+            $tmpArr['total'] = $tmpArr['price'] * $tmpArr['count'];
             $tmpArr['gift_id'] = $giftArr[$i]['id'];
 
             $tmpArr['userid'] = $UserModel->getUserId($giftArr[$i]['username']);
-            $tmpArr['create_time'] = $giftArr[$i]['createtime'];
+            $tmpArr['create_time'] = time();
+            $tmpArr['gift_time'] = $giftArr[$i]['createtime'];
             $setArr[] = $tmpArr;
 
             $checkIdArr[] = $giftArr[$i]['id'];
-        }
 
-        if ($setArr){
-            $giftModel = model('Gift');
+            if ($setArr){
 
-            $giftRes = $giftModel->addgift($setArr);
-            if ($giftRes){
-                ajaxRes(0,'ok');
+                $giftRes = $giftModel->addgift($setArr);
+                if ($giftRes){
+                    ajaxRes(0,'ok');
+                }
+
             }
 
         }
+
 
         ajaxRes(-1,'insert Error');
     }
@@ -109,8 +108,11 @@ class Danmu extends Controller {
             $tmpArr = [];
             // 弹幕过滤检测
             $tmpArr['content'] = $content;
-            $tmpArr['userid'] = $UserModel->getUserId($dataArr[$i]['username']);
-            $tmpArr['create_time'] = $dataArr[$i]['createtime'];
+            $tmpArr['userid'] = $UserModel->getUserId($dataArr[$i]['username'],$dataArr[$i]['yy_id']);
+
+            $tmpArr['msg_time'] = $dataArr[$i]['createtime'];
+            $tmpArr['create_time'] = time();
+
             $setArr[] = $tmpArr;
         }
 
@@ -178,6 +180,7 @@ class Danmu extends Controller {
              $tmpArr['username'] = $itemArr['username'];
              $tmpArr['content'] = $itemArr['content'];
              $tmpArr['createtime'] = $itemArr['createtime'];
+             $tmpArr['yy_id'] = $itemArr['yy_id'];
 
              $checkDanmu = $this->schechDanmu($tmpArr['username'],$danmuArrRes,'username');
 
@@ -219,8 +222,6 @@ class Danmu extends Controller {
 
         // 检查ID是否存在
         $res = $giftModel->getGift($id);
-
-        var_dump($res);
 
         if ($res){
             return true;
