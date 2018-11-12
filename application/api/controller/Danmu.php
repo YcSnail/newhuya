@@ -16,6 +16,10 @@ class Danmu extends Controller {
 
         $dataArr  = input('post.');
 
+        $json = '{"gift":[{"id":"026f0af054af0126be36390b29ffba1b","username":"Angel\u2026","giftName":"\u864e\u7cae","count":"1","price":"0.1","createtime":"1542002521"},{"id":"026f0af054af0126be36390b29ffba1b","username":"Angel\u2026","giftName":"\u864e\u7cae","count":"1","price":"0.1","createtime":"1542002521"}]}';
+
+        $dataArr = json_decode($json,true);
+
         if (!$dataArr){
             ajaxRes(-1,'data is empty!');
         }
@@ -27,26 +31,42 @@ class Danmu extends Controller {
         $giftArr = $dataArr['gift'];
         $setArr = array();
 
+        $checkIdArr = [];
+
+
         $UserModel = model('User');
 
         // 循环礼物列表
         for ($i=0;$i<count($giftArr);$i++) {
 
+            // 检查ID是否重复
+//            if (in_array($giftArr[$i]['id'],$checkIdArr)){
+//                continue;
+//            }
+
+            $checkId = $this->checkGiftId($giftArr[$i]['id']);
+
+            if ($checkId){
+                continue;
+            }
+
             $tmpArr = [];
-            // 弹幕过滤检测
+            // 礼物过滤检测
             $tmpArr['name'] = $giftArr[$i]['giftName'];
             $tmpArr['count'] = $giftArr[$i]['count'];
             $tmpArr['price'] = $giftArr[$i]['price'];
+            $tmpArr['gift_id'] = $giftArr[$i]['id'];
 
             $tmpArr['userid'] = $UserModel->getUserId($giftArr[$i]['username']);
             $tmpArr['create_time'] = $giftArr[$i]['createtime'];
             $setArr[] = $tmpArr;
 
+            $checkIdArr[] = $giftArr[$i]['id'];
         }
 
         if ($setArr){
-
             $giftModel = model('Gift');
+
             $giftRes = $giftModel->addgift($setArr);
             if ($giftRes){
                 ajaxRes(0,'ok');
@@ -145,7 +165,6 @@ class Danmu extends Controller {
     /**
      * @param array $arr
      */
-
     private function more_array_unique($arr=array()){
 
         $danmuArrRes = [];
@@ -188,6 +207,25 @@ class Danmu extends Controller {
 
         $checkRes = array_search($content, array_column($danmuArr, $type));
         return $checkRes;
+    }
+
+    /**
+     * 检查数据库中 是否存在重复数据
+     * @param $id
+     * @return bool
+     */
+    private function checkGiftId($id){
+        $giftModel = model('Gift');
+
+        // 检查ID是否存在
+        $res = $giftModel->getGift($id);
+
+        var_dump($res);
+
+        if ($res){
+            return true;
+        }
+        return false;
     }
 
 

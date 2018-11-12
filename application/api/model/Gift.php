@@ -21,4 +21,13 @@ class Gift  extends Model{
         $res = Gift::saveAll($DataArr);
         return $res;
     }
+
+
+    public function getGift($id){
+
+        $res = Gift::where('gift_id', $id)
+            ->find();
+        return $res;
+    }
+
 }
