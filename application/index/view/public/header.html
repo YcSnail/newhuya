@@ -54,6 +54,30 @@
             left: 0;
         }
 
+
+        /*手机端顶部菜单优化*/
+        @media screen and (max-width: 440px){
+            .layui-header .layui-layout-left .mobile-none {
+                display: none;
+            }
+            .layui-layout-left .mobile-show {
+                display: block;
+            }
+
+        }
+
+        /*手机端顶部菜单优化*/
+        @media screen and (min-width: 441px){
+            .layui-header .layui-layout-left .mobile-none {
+                display: inline-block;
+            }
+
+            .layui-layout-left .mobile-show {
+                display: none;
+            }
+
+        }
+
     </style>
 
 </head>
@@ -71,7 +95,8 @@
         <div class="layui-logo">弹幕审核</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="{:url('index/index')}">弹幕</a></li>
-            <li class="layui-nav-item"><a href="{:url('suggestion/index')}">意见反馈</a></li>
+            <li class="layui-nav-item mobile-none"><a href="{:url('index/index')}">弹幕</a></li>
+            <li class="layui-nav-item mobile-none"><a href="{:url('suggestion/index')}">意见反馈</a></li>
+            <li class="layui-nav-item mobile-show div-none"><a href="{:url('menu/index')}">菜单</a></li>
         </ul>
     </div>
