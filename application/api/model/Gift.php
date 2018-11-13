@@ -16,6 +16,8 @@ class Gift  extends Model{
     // 设置当前模型对应的完整数据表名称
     protected $table = 'hy_gift';
 
+    protected $createTime = 'gift_time';
+
     public function addGift($DataArr){
 
         $res = Gift::saveAll($DataArr);
@@ -28,6 +30,44 @@ class Gift  extends Model{
         $res = Gift::where('gift_id', $id)
             ->find();
         return $res;
+    }
+
+    public function GiftToday(){
+
+        $res = Gift::whereTime('gift_time', 'd')
+            ->alias('g')
+            ->join('user u','g.userid = u.id')
+            ->field('u.username,g.name,g.total,g.count,g.price,g.count,g.gift_time')
+            ->order('g.gift_time desc')
+            ->select()
+            ->toArray();
+        return $res;
+    }
+
+    public function GiftWeek(){
+        $res = Gift::whereTime('gift_time', 'w')
+            ->alias('g')
+            ->join('user u','g.userid = u.id')
+            ->field('u.username,u.yy_id,g.name,g.price,g.total,g.count,g.gift_time')
+            ->order('g.gift_time desc')
+            ->group('g.userid')
+            ->having('count(g.total)')
+            ->select()
+            ->toArray();
+        return $res;
+    }
+
+    public function GiftTotal(){
+        $res = Gift::alias('g')
+            ->join('user u','g.userid = u.id')
+            ->field('u.username,u.yy_id,g.name,g.total,g.price,g.count,g.gift_time')
+            ->order('g.gift_time desc')
+            ->group('g.userid')
+            ->having('count(g.total)')
+            ->select()
+            ->toArray();
+        return $res;
+
     }
 
 }
