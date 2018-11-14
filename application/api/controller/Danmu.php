@@ -46,16 +46,15 @@ class Danmu extends Controller {
                 continue;
             }
 
-            $tmpArr = [];
+            $tmpArr = array();
             // 礼物过滤检测
             $tmpArr['name'] = $giftArr[$i]['giftName'];
             $tmpArr['count'] = $giftArr[$i]['count'];
             $tmpArr['price'] = $giftArr[$i]['price'];
             $tmpArr['total'] = $tmpArr['price'] * $tmpArr['count'];
             $tmpArr['gift_id'] = $giftArr[$i]['id'];
-            $tmpArr['user_id'] = $giftArr[$i]['user_id'];
 
-            $tmpArr['userid'] = $UserModel->getUserId($giftArr[$i]['username'],$dataArr[$i]['user_id']);
+            $tmpArr['userid'] = $UserModel->getUserId($giftArr[$i]['username'],$giftArr[$i]['user_id']);
             $tmpArr['create_time'] = time();
             $tmpArr['gift_time'] = $giftArr[$i]['createtime'];
             $setArr[] = $tmpArr;
