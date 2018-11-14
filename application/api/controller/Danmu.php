@@ -32,6 +32,8 @@ class Danmu extends Controller {
         $UserModel = model('User');
         $giftModel = model('Gift');
 
+        $giftRes = false;
+
         // 循环礼物列表
         for ($i=0;$i<count($giftArr);$i++) {
 
@@ -62,15 +64,15 @@ class Danmu extends Controller {
             $checkIdArr[] = $giftArr[$i]['id'];
 
             if ($setArr){
-
                 $giftRes = $giftModel->addgift($setArr);
-                if ($giftRes){
-                    ajaxRes(0,'ok');
-                }
-
             }
 
         }
+
+        if ($giftRes){
+            ajaxRes(0,'ok');
+        }
+
 
 
         ajaxRes(-1,'insert Error');

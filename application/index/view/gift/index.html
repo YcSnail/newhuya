@@ -16,7 +16,6 @@
         height: 40px;
         line-height: 40px;
         padding: 4px;
-        overflow-x: auto;
     }
 
     .gift-list .gift-item .layui-badge{
@@ -38,13 +37,16 @@
         display: inline-block;
     }
 
-    .layui-badge{
-        width: 20px;
-    }
-
     .gift_time{
         width: 160px;
         display: inline-block;
+    }
+
+    #today .gift-item .gift-num{
+        color: #ff5722;
+        float: none;
+    }
+    .list-num{
     }
 
 
@@ -153,7 +155,7 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
 
                 giftList +=
                     '<li class="gift-item">' +
-                    '    <span class="layui-badge">'+(i+1)+'</span>' +
+                    '    <span class="layui-badge list-num">'+(i+1)+'</span>' +
                     '    <span class="gift_time">'+giftData[i]['gift_time']+'</span>' +
                     '    <span class="username">'+giftData[i]['username']+'</span>' +
                     '    <span class="layui-badge">'+giftData[i]['name']+'</span>' +
@@ -179,7 +181,7 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
 
                 giftList +=
                     '<li class="gift-item">' +
-                    '    <span class="layui-badge">'+(i+1)+'</span>' +
+                    '    <span class="layui-badge list-num">'+(i+1)+'</span>' +
                     '    <span class="gift_time">'+giftData[i]['gift_time']+'</span>' +
                     '    <span class="username">'+giftData[i]['username']+'</span>' +
                     '    <span class="gift-num">'+totals+'金豆</span>' +
