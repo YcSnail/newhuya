@@ -87,3 +87,19 @@ function addKeyUp(key,bind) {
     });
 
 }
+
+
+/**
+ * 转换为
+ * @param s
+ * @returns {string}
+ */
+function fmoney(s) {
+    s = parseFloat((s + "").replace(/[^\d\.-]/g, ""))+ "";
+    var l = s.split(".")[0].split("").reverse();
+    t = "";
+    for (i = 0; i < l.length; i++) {
+        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+    }
+    return t.split("").reverse().join("");
+}

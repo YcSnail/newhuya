@@ -25,55 +25,64 @@
     }
 
     .gift-num{
-        color: #ff0000;
+        color: #eaa800;
+        float: right;
     }
 
-    .layui-item{
-        padding: 8px;
+    .gift-item{
+        border-bottom: 1px solid #d9d9d9;
     }
+
+    .username{
+        color: #FF5722;
+        display: inline-block;
+    }
+
+    .layui-badge{
+        width: 20px;
+    }
+
+    .gift_time{
+        width: 160px;
+        display: inline-block;
+    }
+
 
 </style>
 
 
-<div class="layui-body" style="padding: 15px">
-    <!-- 内容主体区域 -->
-    <div class="layui-col-md6 layui-col-sm6 layui-col-xs12 layui-item">
+<div class="layui-body" style="padding: 15px;background-color: #fff">
 
-        <div class="gift-title">
-            今日排行榜
-        </div>
 
-        <ul class="gift-list" id="today">
-
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">今日排行榜</li>
+            <li>本周排行榜</li>
+            <li>历史排行榜</li>
         </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <ul class="gift-list" id="today">
 
-    </div>
-    <div class="layui-col-md6 layui-col-sm6 layui-col-xs12 layui-item">
+                </ul>
 
-        <div class="gift-title">
-            本周排行榜
+            </div>
+            <div class="layui-tab-item">
+
+                <ul class="gift-list" id="week">
+
+                </ul>
+
+            </div>
+            <div class="layui-tab-item">
+
+                <ul class="gift-list" id="total">
+
+                </ul>
+
+            </div>
         </div>
-
-        <ul class="gift-list" id="week">
-
-        </ul>
-
     </div>
-
-    <div class="layui-col-md6 layui-col-sm6 layui-col-xs12 layui-item">
-
-        <div class="gift-title">
-            历史排行榜
-        </div>
-
-        <ul class="gift-list" id="total">
-
-        </ul>
-
-
-
-    </div>
-
 
 </div>
 
@@ -88,9 +97,6 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
     $().ready(function () {
 
         // 获取今日榜单
-
-        console.log('aa');
-
         getGift();
 
         function getGift() {
@@ -128,8 +134,8 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
 
             // 循环数据
             var todayList = getList(today);
-            var weekList = getList(week);
-            var totalList = getList(total);
+            var weekList = getRankList(week);
+            var totalList = getRankList(total);
 
 
             $('#today').empty().append(todayList);
@@ -147,16 +153,45 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
 
                 giftList +=
                     '<li class="gift-item">' +
-                    '    <span class="layui-badge layui-bg-blue">'+(i+1)+'</span>' +
-                    '    <span>'+giftData[i]['gift_time']+'</span>' +
-                    '    <span class="layui-badge layui-bg-blue">'+giftData[i]['username']+'</span>' +
+                    '    <span class="layui-badge">'+(i+1)+'</span>' +
+                    '    <span class="gift_time">'+giftData[i]['gift_time']+'</span>' +
+                    '    <span class="username">'+giftData[i]['username']+'</span>' +
                     '    <span class="layui-badge">'+giftData[i]['name']+'</span>' +
                     '    <span>X</span>' +
                     '    <span class="gift-num">'+giftData[i]['count']+'</span>' +
                     '</li>';
             }
 
+            if (giftList ==''){
+                giftList = '<li class="gift-item">暂无数据!</li>';
+            }
+
             return giftList;
+        }
+        
+        function getRankList(giftData) {
+
+            var giftList = '';
+
+            for (var i=0;i<giftData.length;i++){
+
+                var totals = fmoney(giftData[i]['totals']);
+
+                giftList +=
+                    '<li class="gift-item">' +
+                    '    <span class="layui-badge">'+(i+1)+'</span>' +
+                    '    <span class="gift_time">'+giftData[i]['gift_time']+'</span>' +
+                    '    <span class="username">'+giftData[i]['username']+'</span>' +
+                    '    <span class="gift-num">'+totals+'金豆</span>' +
+                    '</li>';
+            }
+
+            if (giftList ==''){
+                giftList = '<li class="gift-item">暂无数据!</li>';
+            }
+
+            return giftList;
+
         }
         
 
