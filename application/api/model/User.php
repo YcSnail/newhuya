@@ -17,16 +17,27 @@ class User extends Model{
      * @param $userName 查询用户名
      * @return string 返回用户ID
      */
-    public function getUserId($userName,$yy_id = ''){
+    public function getUserId($userName,$user_id,$yy_id = ''){
 
-        $getUserRes = User::where('username', $userName)
-            ->field('id,yy_id')->find();
+        $getUserRes = User::where('user_id', $user_id)
+            ->field('id,yy_id,username')->find();
 
         if (!$getUserRes){
-            $getUserRes['id'] = $this->addUser($userName,$yy_id);
+            $getUserRes['id'] = $this->addUser($userName,$user_id,$yy_id);
         }
 
-        // 判断是否存在yyid
+        // 判断用户名是否已经修改
+        if (isset($getUserRes['username']) && $getUserRes['username'] != $userName ) {
+
+            // 更新用户名
+            $upRes = $this->updataUserName($getUserRes['id'],$userName);
+            if (!$upRes){
+                ajaxRes(-1,'更新用户名 失败!');
+            }
+
+        }
+
+            // 判断是否存在yyid
         if (isset($getUserRes['yy_id']) && $getUserRes['yy_id'] == 0 && $yy_id){
 
             // 添加yyid
@@ -47,11 +58,12 @@ class User extends Model{
      * @param $userName 新增用户名
      * @return string 返回用户ID
      */
-    private function addUser($userName,$yy_id =''){
+    private function addUser($userName,$user_id,$yy_id =''){
 
         // 新增一条数据
         $insertUser  = [
             'username'=>$userName,
+            'user_id'=>$user_id,
             'yy_id'=>$yy_id,
             'sign'=>0,
             'create_time'=>time()
@@ -77,5 +89,20 @@ class User extends Model{
             ->update(['yy_id' => $yyId]);
         return $upYyIdRes;
     }
+
+
+    /**
+     * 更新用户名
+     * @param $userId
+     * @param $username
+     * @return User
+     */
+    private function updataUserName($userId,$username){
+
+        $upRes = User::where('id', $userId)
+            ->update(['username' => $username]);
+        return $upRes;
+    }
+
 
 }

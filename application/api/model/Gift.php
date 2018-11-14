@@ -48,10 +48,9 @@ class Gift  extends Model{
         $res = Gift::whereTime('gift_time', 'w')
             ->alias('g')
             ->join('user u','g.userid = u.id')
-            ->field('u.username,u.yy_id,g.name,g.price,g.total,g.count,g.gift_time')
-            ->order('g.gift_time desc')
-            ->group('g.userid')
-            ->having('count(g.total)')
+            ->field('u.username,u.yy_id,g.name,g.price,g.total,g.gift_time,sum(g.total) * 1000 as totals')
+            ->order('totals desc')
+            ->group('u.id')
             ->select()
             ->toArray();
         return $res;
@@ -60,14 +59,12 @@ class Gift  extends Model{
     public function GiftTotal(){
         $res = Gift::alias('g')
             ->join('user u','g.userid = u.id')
-            ->field('u.username,u.yy_id,g.name,g.total,g.price,g.count,g.gift_time')
-            ->order('g.gift_time desc')
-            ->group('g.userid')
-            ->having('count(g.total)')
+            ->field('u.username,u.yy_id,g.name,g.price,g.total,g.gift_time,sum(g.total) * 1000 as totals')
+            ->order('totals desc')
+            ->group('u.id')
             ->select()
             ->toArray();
         return $res;
-
     }
 
 }

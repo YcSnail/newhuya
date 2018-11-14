@@ -53,8 +53,9 @@ class Danmu extends Controller {
             $tmpArr['price'] = $giftArr[$i]['price'];
             $tmpArr['total'] = $tmpArr['price'] * $tmpArr['count'];
             $tmpArr['gift_id'] = $giftArr[$i]['id'];
+            $tmpArr['user_id'] = $giftArr[$i]['user_id'];
 
-            $tmpArr['userid'] = $UserModel->getUserId($giftArr[$i]['username']);
+            $tmpArr['userid'] = $UserModel->getUserId($giftArr[$i]['username'],$dataArr[$i]['user_id']);
             $tmpArr['create_time'] = time();
             $tmpArr['gift_time'] = $giftArr[$i]['createtime'];
             $setArr[] = $tmpArr;
@@ -108,7 +109,7 @@ class Danmu extends Controller {
             $tmpArr = [];
             // 弹幕过滤检测
             $tmpArr['content'] = $content;
-            $tmpArr['userid'] = $UserModel->getUserId($dataArr[$i]['username'],$dataArr[$i]['yy_id']);
+            $tmpArr['userid'] = $UserModel->getUserId($dataArr[$i]['username'],$dataArr[$i]['user_id'],$dataArr[$i]['yy_id']);
 
             $tmpArr['msg_time'] = $dataArr[$i]['createtime'];
             $tmpArr['create_time'] = time();
@@ -181,6 +182,7 @@ class Danmu extends Controller {
              $tmpArr['content'] = $itemArr['content'];
              $tmpArr['createtime'] = $itemArr['createtime'];
              $tmpArr['yy_id'] = $itemArr['yy_id'];
+             $tmpArr['user_id'] = $itemArr['user_id'];
 
              $checkDanmu = $this->schechDanmu($tmpArr['username'],$danmuArrRes,'username');
 
