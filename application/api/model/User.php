@@ -68,6 +68,7 @@ class User extends Model{
             'sign'=>0,
             'create_time'=>time()
         ];
+
         $insertRes = User::create($insertUser);
 
         if (!$insertRes){

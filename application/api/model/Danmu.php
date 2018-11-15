@@ -21,4 +21,12 @@ class Danmu extends Model{
         return $res;
     }
 
+
+    public function getDanmuId($id){
+
+        $res = Danmu::where('danmu_id', $id)
+            ->find();
+        return $res;
+    }
+
 }

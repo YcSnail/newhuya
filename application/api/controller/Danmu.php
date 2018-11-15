@@ -25,8 +25,6 @@ class Danmu extends Controller {
         }
 
         $giftArr = $dataArr['gift'];
-        $setArr = array();
-
         $checkIdArr = [];
 
         $UserModel = model('User');
@@ -36,6 +34,8 @@ class Danmu extends Controller {
 
         // 循环礼物列表
         for ($i=0;$i<count($giftArr);$i++) {
+
+            $setArr = array();
 
             // 检查ID是否重复
             if (in_array($giftArr[$i]['id'],$checkIdArr)){
@@ -93,39 +93,49 @@ class Danmu extends Controller {
 
         $danmuArr = $dataArr['danmu'];
 
-        $setArr = [];
 
         //1.移除重复弹幕
-        $dataArr = $this->more_array_unique($danmuArr);
         $UserModel = model('User');
+        $danmuModel = model('Danmu');
+
+        $danmuIdArr = [];
+        $danmuRes = false;
+
+        $dataArr = $this->more_array_unique($danmuArr);
+
 
         for ($i=0;$i<count($dataArr);$i++){
 
-            $content = $this->checkDanmu($dataArr[$i]['content']);
+            $setArr = [];
 
-            if ($content == false){
+            // 检查ID是否重复
+            if (in_array($dataArr[$i]['danmu_id'],$danmuIdArr)){
+                continue;
+            }
+
+            $checkId = $this->checkDanmuId($dataArr[$i]['danmu_id']);
+            if ($checkId){
                 continue;
             }
 
             $tmpArr = [];
             // 弹幕过滤检测
-            $tmpArr['content'] = $content;
+            $tmpArr['content'] = $dataArr[$i]['content'];
             $tmpArr['userid'] = $UserModel->getUserId($dataArr[$i]['username'],$dataArr[$i]['user_id'],$dataArr[$i]['yy_id']);
-
             $tmpArr['msg_time'] = $dataArr[$i]['createtime'];
+            $tmpArr['danmu_id'] = $dataArr[$i]['danmu_id'];
             $tmpArr['create_time'] = time();
 
             $setArr[] = $tmpArr;
+            $danmuIdArr[] = $dataArr[$i]['danmu_id'];
+
+            if ($setArr){
+                $danmuRes = $danmuModel->addDanmu($setArr);
+            }
         }
 
-        if ($setArr){
-
-            $danmuModel = model('Danmu');
-            $danmuRes = $danmuModel->addDanmu($setArr);
-            if ($danmuRes){
-                ajaxRes(0,'ok');
-            }
-
+        if ($danmuRes){
+            ajaxRes(0,'ok');
         }
 
         ajaxRes(-1,'insert Error');
@@ -164,6 +174,24 @@ class Danmu extends Controller {
         return $resCount;
     }
 
+
+    /**
+     * 检查数据库中 是否存在重复数据
+     * @param $id
+     * @return bool
+     */
+    private function checkGiftId($id){
+        $giftModel = model('Gift');
+
+        // 检查ID是否存在
+        $res = $giftModel->getGift($id);
+        if ($res){
+            return true;
+        }
+        return false;
+    }
+
+
     // 二维数组去重
 
     /**
@@ -175,34 +203,42 @@ class Danmu extends Controller {
         if (!is_array($arr)){
             ajaxRes(-1,'danmu is not array');
         }
-         // 循环获取所有数据
-         foreach ($arr as $itemArr) {
-             $tmpArr = [];
+        // 循环获取所有数据
+        foreach ($arr as $itemArr) {
+            $tmpArr = [];
 
-             $tmpArr['username'] = $itemArr['username'];
-             $tmpArr['content'] = $itemArr['content'];
-             $tmpArr['createtime'] = $itemArr['createtime'];
-             $tmpArr['yy_id'] = $itemArr['yy_id'];
-             $tmpArr['user_id'] = $itemArr['user_id'];
+            // 检查弹幕是否为无用弹幕
+            $checkCount = $this->checkDanmu($itemArr['content']);
 
-             $checkDanmu = $this->schechDanmu($tmpArr['username'],$danmuArrRes,'username');
+            if ($checkCount == false){
+                continue;
+            }
 
-             // 判断是否内容重复
-             // 循环获取  用户和内容  保存在新数组
+            $tmpArr['username'] = $itemArr['username'];
+            $tmpArr['content'] = $itemArr['content'];
+            $tmpArr['createtime'] = $itemArr['createtime'];
+            $tmpArr['yy_id'] = $itemArr['yy_id'];
+            $tmpArr['danmu_id'] = $itemArr['danmu_id'];
+            $tmpArr['user_id'] = $itemArr['user_id'];
 
-             if ($checkDanmu === false){
-                 $danmuArrRes[] = $tmpArr;
+            $checkDanmu = $this->schechDanmu($tmpArr['username'],$danmuArrRes,'username');
 
-             }else
-                 if ($danmuArrRes[$checkDanmu]['content'] != $tmpArr['content']){
+            // 判断是否内容重复
+            // 循环获取  用户和内容  保存在新数组
 
-                 // 含有重复值
-                 //再次检查 判断是否用户重复
-                 $danmuArrRes[] = $tmpArr;
-             }
+            if ($checkDanmu === false){
+                $danmuArrRes[] = $tmpArr;
 
-         }
-         return $danmuArrRes;
+            }else
+                if ($danmuArrRes[$checkDanmu]['content'] != $tmpArr['content']){
+
+                    // 含有重复值
+                    //再次检查 判断是否用户重复
+                    $danmuArrRes[] = $tmpArr;
+                }
+
+        }
+        return $danmuArrRes;
     }
 
     private function schechDanmu($content,$danmuArr,$type = 'username'){
@@ -220,17 +256,15 @@ class Danmu extends Controller {
      * @param $id
      * @return bool
      */
-    private function checkGiftId($id){
-        $giftModel = model('Gift');
+    private function checkDanmuId($danmuId){
+        $danmuModel = model('Danmu');
 
         // 检查ID是否存在
-        $res = $giftModel->getGift($id);
-
+        $res = $danmuModel->getDanmuId($danmuId);
         if ($res){
             return true;
         }
         return false;
     }
-
 
 }
