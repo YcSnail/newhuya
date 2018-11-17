@@ -58,7 +58,9 @@
 
         $().ready(function () {
 
-            $('.layui-nav-item:eq(1)').addClass('layui-this');
+            setTab('suggestion/index');
+
+            title('意见反馈');
 
             addKeyUp('.search', '#start');
 

@@ -29,4 +29,30 @@ class Danmu extends Model{
         return $res;
     }
 
+    public function getDanmuCountDay(){
+
+        $res = Danmu::where('status=0')
+            ->whereTime('msg_time', 'd')
+            ->count();
+        return $res;
+    }
+
+
+    public function getDanmuCountWeek(){
+
+        $res = Danmu::where('status=0')
+            ->whereTime('msg_time', 'w')
+            ->count();
+        return $res;
+    }
+
+
+    public function getDanmuCountTotal(){
+
+        $res = Danmu::where('status=0')
+            ->count();
+        return $res;
+    }
+
+
 }

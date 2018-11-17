@@ -25,7 +25,6 @@
 
     .gift-num{
         color: #eaa800;
-        float: right;
     }
 
     .gift-item{
@@ -35,6 +34,7 @@
     .username{
         color: #FF5722;
         display: inline-block;
+        width: 200px;
     }
 
     .gift_time{
@@ -97,6 +97,10 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
         , layer = layui.layer;
 
     $().ready(function () {
+
+        title('礼物排行榜');
+
+        setTab('gift/index');
 
         // 获取今日榜单
         getGift();

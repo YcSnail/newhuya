@@ -6,12 +6,23 @@ function title(text) {
         return false;
     }
 
-    var oldName = $('.layui-logo').text();
+    var oldName = '小腿弹幕平台';
     var newName = text + '-' + oldName;
 
     $('.layui-logo').text(text);
     $("title").html(newName);
 }
+
+function setTab(className) {
+
+    $('.layui-nav-item').each(function () {
+        if ($(this).data('url') == className){
+            $(this).addClass('layui-this');
+        }
+
+    });
+}
+
 
 /**
  * 获取系统时间

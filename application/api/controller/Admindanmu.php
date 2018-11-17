@@ -51,4 +51,44 @@ class Admindanmu extends Controller {
 
     }
 
+    /**
+     * 获取弹幕统计数据和网站基本信息
+     */
+    public function getcount(){
+
+        //
+        $dataArr  = input('post.');
+
+        // 判断数据是否存在
+        if (!isset($dataArr['type']) && $dataArr['type'] !='getcount'){
+            ajaxRes(-1,'非法请求!');
+        }
+
+        $DanmuModel = model('Danmu');
+        $GiftModel = model('Gift');
+
+        $SttingModel = model('Stting');
+
+        $res = [];
+
+        $res['dm']['today'] =$DanmuModel->getDanmuCountDay();
+        $res['dm']['week'] =$DanmuModel->getDanmuCountWeek();
+        $res['dm']['total'] =$DanmuModel->getDanmuCountTotal();
+
+        $res['gift']['today'] =$GiftModel->getGiftCountDay();
+        $res['gift']['week'] = $GiftModel->getGiftCountWeek();
+        $res['gift']['total'] =$GiftModel->getGiftCountTotal();
+
+
+        $stting = $SttingModel->getStting();
+        $res['start_time'] = $stting['start_time'];
+
+        if ($res){
+            ajaxRes(0,$res);
+        }
+        ajaxRes(-1,'获取数据失败!');
+    }
+
+
+
 }

@@ -67,4 +67,30 @@ class Gift  extends Model{
         return $res;
     }
 
+
+
+    public function getGiftCountDay(){
+
+        $res = Gift::whereTime('gift_time', 'd')
+            ->count();
+        return $res;
+    }
+
+
+    public function getGiftCountWeek(){
+
+        $res = Gift::whereTime('gift_time', 'w')
+            ->count();
+        return $res;
+    }
+
+
+    public function getGiftCountTotal(){
+
+        $res = Gift::count();
+        return $res;
+    }
+
+
+
 }
