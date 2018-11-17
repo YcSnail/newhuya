@@ -234,22 +234,20 @@
             title('弹幕查询');
             setTab('index/index');
 
-
             // 每页数据
             var pageNum = 50;
             // 当前页
-            var nowPage = 0;
+            var nowPage = 1;
             var search = {};
-            //  是否已经处在 分页器
-            var isPage = false;
+            oldUser = '';
 
             addKeyUp('.search','#start');
 
             // 查询获取弹幕
             //监听提交
             form.on('submit(demo1)', function(data){
-                // 提交数据
 
+                // 提交数据
                 search = data.field;
                 getDanmu();
             });
@@ -307,15 +305,18 @@
                 $('.danmu-content').removeClass('div-none');
                 $('.danmu-list').empty().append(list);
 
-                if (!isPage){
+
+                searchUserName = $('.search').val();
+
+                // 判断用户是否更改
+                if (oldUser != searchUserName){
+
                     setpage(data);
                 }
 
             }
 
             function setpage(data){
-
-                isPage = true;
 
                 // 分页数据
                 laypage.render({
@@ -337,8 +338,19 @@
                             //do something
                             nowPage = obj.curr;
                             pageNum = obj.limit;
+
+                            // 判断用户是否更改
+                            if (oldUser != searchUserName){
+
+                                pageNum = obj.limit;
+                                if (oldUser != ''){
+                                    nowPage = 1;
+                                }
+                                oldUser = searchUserName;
+
+                            }
+
                             getDanmu();
-                            goTop();
                         }
                     }
 
