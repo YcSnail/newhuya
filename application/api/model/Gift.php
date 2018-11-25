@@ -32,7 +32,7 @@ class Gift  extends Model{
         return $res;
     }
 
-    public function GiftToday(){
+    public function GiftReal(){
 
         $res = Gift::whereTime('gift_time', 'd')
             ->alias('g')
@@ -43,6 +43,19 @@ class Gift  extends Model{
             ->toArray();
         return $res;
     }
+
+    public function GiftToday(){
+        $res = Gift::whereTime('gift_time', 'd')
+            ->alias('g')
+            ->join('user u','g.userid = u.id')
+            ->field('u.username,u.yy_id,g.name,g.price,g.total,g.gift_time,sum(g.total) * 1000 as totals')
+            ->order('totals desc')
+            ->group('u.id')
+            ->select()
+            ->toArray();
+        return $res;
+    }
+
 
     public function GiftWeek(){
         $res = Gift::whereTime('gift_time', 'w')

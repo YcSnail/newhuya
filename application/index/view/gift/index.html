@@ -58,12 +58,19 @@
 
     <div class="layui-tab">
         <ul class="layui-tab-title">
-            <li class="layui-this">今日排行榜</li>
+            <li class="layui-this">今日实时礼物</li>
+            <li>今日排行榜</li>
             <li>本周排行榜</li>
             <li>历史排行榜</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
+                <ul class="gift-list" id="real">
+
+                </ul>
+
+            </div>
+            <div class="layui-tab-item">
                 <ul class="gift-list" id="today">
 
                 </ul>
@@ -134,16 +141,18 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
 
         function setList(data) {
 
+            var real = data['real'];
             var today = data['today'];
             var week = data['week'];
             var total = data['total'];
 
             // 循环数据
-            var todayList = getList(today);
+            var realList = getList(real);
+            var todayList = getRankList(today);
             var weekList = getRankList(week);
             var totalList = getRankList(total);
 
-
+            $('#real').empty().append(realList);
             $('#today').empty().append(todayList);
             $('#week').empty().append(weekList);
             $('#total').empty().append(totalList);

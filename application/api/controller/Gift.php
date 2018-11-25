@@ -77,6 +77,7 @@ class Gift extends Collection {
         $GiftModel = model('Gift');
         $giftData = [];
 
+        $giftData['real'] =  $GiftModel->GiftReal();
         $giftData['today'] =  $GiftModel->GiftToday();
         $giftData['week'] =  $GiftModel->GiftWeek();
         $giftData['total'] =  $GiftModel->GiftTotal();
