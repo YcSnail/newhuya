@@ -12,6 +12,7 @@
  */
 
 namespace app\api\controller;
+
 use think\Model;
 
 class Online extends Model {
@@ -20,14 +21,14 @@ class Online extends Model {
     // 添加在线用户信息
     public function add(){
 
-        $dataArr  = input('post.');
+        $dataArr = input('post.');
 
-        if (!$dataArr){
-            ajaxRes(-1,'data is empty!');
+        if (!$dataArr) {
+            ajaxRes(-1, 'data is empty!');
         }
 
-        if (!isset($dataArr['online'])){
-            ajaxRes(-1,'get error!');
+        if (!isset($dataArr['online'])) {
+            ajaxRes(-1, 'get error!');
         }
 
         $getArr = $dataArr['online'];
@@ -38,13 +39,48 @@ class Online extends Model {
 
         $onlineModel = model('online');
         $onlineRes = $onlineModel->addOnline($setArr);
-        if ($onlineRes){
-            ajaxRes(0,'ok');
+        if ($onlineRes) {
+            ajaxRes(0, 'ok');
         }
-        ajaxRes(-1,'insert Error');
+        ajaxRes(-1, 'insert Error');
 
     }
 
+    public function getReal(){
+
+        $dataArr = input('post.');
+
+        if (!$dataArr) {
+            ajaxRes(-1, 'data is empty!');
+        }
+
+        if (!isset($dataArr['type'])) {
+            ajaxRes(-1, '非法请求!');
+        }
+
+        $type = $dataArr['type'];
+
+        if ($type != 'all') {
+            ajaxRes(-1, '非法请求!');
+        }
+
+        // 获取数据
+        $DbModel = model('Online');
+        $DbData = [];
+
+        $DbData['real'] = $DbModel->getReal();
+//        $DbData['today'] = $DbModel->getToday();
+//        $DbData['week'] = $DbModel->getWeek();
+//        $DbData['total'] = $DbModel->getTotal();
+
+        if ($DbData) {
+            ajaxRes(0, $DbData);
+        }
+
+        ajaxRes(-1, '数据不存在!');
+
+
+    }
 
 
 }

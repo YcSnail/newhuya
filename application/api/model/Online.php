@@ -23,4 +23,21 @@ class Online  extends Model {
     }
 
 
+    public function getReal(){
+
+        $res = Online::where('count','>', '100')
+            ->whereTime('online_time', 'd')
+            ->field('count,online_time')
+            ->order('online_time desc')
+            ->select()
+            ->toArray();
+
+//        $res = Online::whereTime('online_time', 'd')
+//            ->field('count')
+//            ->order('online_time desc')
+//            ->select()
+//            ->toArray();
+        return $res;
+    }
+
 }
