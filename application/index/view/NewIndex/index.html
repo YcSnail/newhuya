@@ -1,0 +1,404 @@
+{include file="public/new-header" /}
+
+<link rel="stylesheet" href="/static/font-awesome/css/font-awesome.css">
+
+<title>礼物统计-小腿弹幕统计平台</title>
+<meta name='Keywords' content='小腿,黄翔,华文,巨龙,眼少,国服四君子,LONGDD,longdd,小腿弹幕,虎牙弹幕统计,虎牙直播礼物统计,longdd直播,longdd微博,不老传说longdd,yy直播,弹幕统计平台'>
+<meta name='Description' content='虎牙直播礼物统计是一个用于统计当前主播每日,每周和历史总榜的统计礼物网站'>
+
+<style>
+
+    .items{
+        margin-top: 25px;
+    }
+
+    .layui-card-body {
+        position: relative;
+        padding: 10px 15px 0 15px;
+        line-height: 24px;
+    }
+
+    .human-title {
+        font-size: 20px;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .human {
+        height: 300px;
+        text-align: center;
+    }
+
+    .human img {
+        border-radius: 10px;
+        width: 90%;
+        height: 100%;
+        display: inline;
+        max-width: 300px;
+    }
+
+    .human-note {
+        text-align: center;
+    }
+
+    .tag {
+        width: 80px;
+        margin: 4px 4px;
+        background-color: #2b73ff;
+        padding: 4px;
+        border-radius: 10px;
+        color: #fff;
+        display: inline-block;
+    }
+
+    .div-search {
+        width: 80%;
+    }
+
+    .user {
+        margin-left:20px;
+        max-width: 270px;
+    }
+
+    .user,.layui-card{
+        border-radius: 10px;
+    }
+
+    .layui-form {
+        text-align: center;
+    }
+
+    .user-tags {
+        margin-top: 6px;
+        border-top: 1px solid #cccccc;
+        min-height: 46px;
+    }
+
+    .user-tags i {
+        font-size: 26px;
+        padding: 10px 8px;
+        line-height: 46px;
+    }
+
+    .danmu-content{
+        width: 80%;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 20px auto;
+    }
+
+    .danmu-content p,.danmu-content ul{
+        padding: 15px;
+        background-color: #ffffff;
+        margin: 10px 0;
+    }
+
+    .danmu-title{
+        text-align: center;
+    }
+
+    .danmu-list >li{
+        height: 30px;
+        line-height: 30px;
+        border-bottom: 1px solid #e9e9e9;
+        overflow: auto;
+    }
+
+    .danmu-span{
+        margin: 0 4px;
+        overflow-x: scroll;
+    }
+
+    .danmu-time{
+        color: #000;
+    }
+    .danmu-name{
+        color: #000;
+    }
+    .danmu-text{
+        color: #2b73ff;
+    }
+
+    #toTop {
+        position: fixed;
+        cursor: pointer;
+        text-align: center;
+        width: 60px;
+        height: 60px;
+        color: #fff;
+        font-size: 40px;
+        line-height: 60px;
+        background: #2b73ff;
+        border-radius: 50%;
+        -webkit-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out;
+        opacity: 1;
+        pointer-events: none;
+        right: 4%;
+        bottom: 60px;
+        display: none;
+    }
+
+
+</style>
+
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-col-md2 layui-col-sm4 layui-col-xs12 user items">
+        <div class="layui-card">
+            <!--<div class="layui-card-header"><p class="human-title">LongDD</p></div>-->
+            <div class="layui-card-body">
+                <p class="human"><img class="human-img" src="/static/images/huangxiang.jpg" alt=""></p>
+                <div class="human-note">
+                    <p class="human-title">LongDD</p>
+                    <p class="human-title">黄翔</p>
+                    <p class="tags">
+                        <span class="tag">远古巨鱼</span>
+                        <span class="tag">华文</span>
+                        <span class="tag">小腿</span>
+                        <span class="tag">眼少</span>
+                    </p>
+                    <p class="user-tags">
+                        <i class="layui-icon layui-icon-username" data-masges="关于我" data-href="https://baike.baidu.com/item/longdd/7872594"></i>
+                        <i class="layui-icon layui-icon-rate" data-masges="关注直播" data-href="http://www.huya.com/longdd"></i>
+                        <i class="layui-icon layui-icon-login-weibo" data-masges="新浪微博" data-href="https://www.weibo.com/longdd520"></i>
+                        <i class="layui-icon layui-icon-video" data-masges="查看相关视频" data-href="https://search.bilibili.com/all?keyword=%E9%BB%84%E7%BF%94%20longdd%20%E9%BE%99dd%20%E9%BE%99%E7%A5%9E&from_source=banner_search"></i>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-md9 layui-col-sm8 layui-col-xs12 items">
+        <form class="layui-form">
+
+            <div class="layui-inline" style="width: 20%">
+                <select name="type" id="type">
+                    <option value="user">用户名</option>
+                    <!--<option value="danmu">弹幕</option>-->
+                </select>
+            </div>
+
+            <div class="layui-inline" style="width: 50%">
+                <input type="text" name="search" lay-verify="required" placeholder="输入关键字" autocomplete="off" class="layui-input search">
+            </div>
+
+            <button style="width: 9%" type="button" class="layui-btn btn-submit" id="start"  lay-submit="" lay-filter="demo1"><i class="layui-icon layui-icon-search"></i></button>
+
+        </form>
+
+        <div class="danmu-content div-none">
+
+            <p class="danmu-title div-none">
+                当前用户标记次数: 10
+            </p>
+            <p class="danmu-title">
+                弹幕数: <span class="danmu-num">0</span>
+            </p>
+
+            <ul class="danmu-list">
+                <!--<li>-->
+                    <!--<span class="danmu-span danmu-time">2018-11-01 11:15:30</span>-->
+                    <!--<span class="danmu-span danmu-name">张三</span>-->
+                    <!--<span class="danmu-span danmu-text">厉害厉害</span>-->
+                <!--</li>-->
+
+            </ul>
+
+            <div id="danmu-page"></div>
+
+        </div>
+
+        <!--<div id="toTop" class="layui-icon layui-icon-up"></div>-->
+
+    </div>
+
+</div>
+
+<script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'layer','laypage'], function () {
+        var element = layui.element
+            , form = layui.form
+            , laypage = layui.laypage
+            , layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            required: function(value){
+                if(value.length == 0){
+                    return '输入要查的东西啊! 笨比!!!';
+                }
+            }
+        });
+
+        $().ready(function () {
+
+            title('弹幕查询');
+            setTab('index/index');
+
+            // 每页数据
+            var pageNum = 50;
+            // 当前页
+            var nowPage = 1;
+            var search = {};
+            oldUser = '';
+
+            addKeyUp('.search','#start');
+
+            // 查询获取弹幕
+            //监听提交
+            form.on('submit(demo1)', function(data){
+
+                // 提交数据
+                search = data.field;
+                getDanmu();
+            });
+
+            function getDanmu() {
+
+                var url = '/api/AdminDanmu/get';
+                maskShow();
+
+                search['page'] = nowPage;
+                search['pageNum'] = pageNum;
+
+                $.post(
+                    url,
+                    search,
+                    function(result){
+                        maskClose();
+
+                        if (result.code == 0){
+                            setList(result.message);
+                        }else{
+                            layer.msg(result.message);
+
+                        }
+
+                    },
+                    'json'
+                );
+
+            }
+
+
+            function setList(data){
+
+                var list = '';
+
+                var danmuList = data.data;
+
+                for (var i=0;i<danmuList.length;i++){
+
+                    list +=
+                        '<li>' +
+                        '    <span class="danmu-span danmu-time">'+danmuList[i]['create_time']+'</span>' +
+                        '    <span class="danmu-span danmu-name">'+danmuList[i]['username']+':</span>' +
+                        '    <span class="danmu-span danmu-text">'+danmuList[i]['content']+'</span>' +
+                        '</li>';
+                }
+
+                if (list ==''){
+                    list = '<li>暂未记录当前用户弹幕!</li>';
+                }
+
+                $('.danmu-num').text(data.total);
+
+                $('.danmu-content').removeClass('div-none');
+                $('.danmu-list').empty().append(list);
+
+
+                searchUserName = $('.search').val();
+
+                // 判断用户是否更改
+                if (oldUser != searchUserName){
+
+                    setpage(data);
+                }
+
+            }
+
+            function setpage(data){
+
+                // 分页数据
+                laypage.render({
+                    elem: 'danmu-page' //注意，这里的 test1 是 ID，不用加 # 号
+                    ,count: data.total //数据总数，从服务端得到
+                    ,limit:pageNum
+                    ,limits:[20,50,100]
+                    ,groups:5
+                    ,prev:'<'
+                    ,next:'>'
+                    ,first:'首页'
+                    ,last:'末页'
+                    ,layout:['prev','page','next','limit']
+                    ,jump: function(obj, first){
+                        //obj包含了当前分页的所有参数，比如：
+
+                        //首次不执行
+                        if(!first){
+                            //do something
+                            nowPage = obj.curr;
+                            pageNum = obj.limit;
+
+                            // 判断用户是否更改
+                            if (oldUser != searchUserName){
+
+                                pageNum = obj.limit;
+                                if (oldUser != ''){
+                                    nowPage = 1;
+                                }
+                                oldUser = searchUserName;
+
+                            }
+
+                            getDanmu();
+                        }
+                    }
+
+                });
+
+            }
+
+
+
+
+            $(".user-tags > .layui-icon").mouseover(function () {
+
+                var masage = $(this).data('masges');
+
+                layer.tips(masage, $(this), {
+                    tips: [3, '#009688'],
+                    time: 1000
+                });
+
+            });
+
+            $(".user-tags > .layui-icon").click(function () {
+
+                var href = $(this).data('href');
+                window.open(href);
+            })
+
+
+        });
+
+        function maskShow() {
+            var index = layer.load();
+
+            setTimeout(function(){
+                layer.close(index);
+            }, 5000);
+
+        }
+
+        function maskClose() {
+            layer.closeAll('loading');
+        }
+
+
+    });
+</script>
+{include file="public/new-footer" /}
