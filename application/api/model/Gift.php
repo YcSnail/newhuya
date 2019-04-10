@@ -28,7 +28,8 @@ class Gift  extends Model{
     public function getGift($id){
 
         $res = Gift::where('gift_id', $id)
-            ->find();
+            ->find()
+            ->limit(1);
         return $res;
     }
 

@@ -34,12 +34,12 @@ class Admindanmu extends Controller {
         // 默认按用户处理
         $UserModel = model('AdminUser');
 
-        $page = $dataArr['page'];
-        $pageNum = $dataArr['pageNum'];
+        $page = intval($dataArr['page']) ;
+        $pageNum = intval($dataArr['pageNum']) == 0 ? 20 : intval($dataArr['pageNum']) ;
 
         if ($dataArr['type'] =='user'){
 
-            $danmuRes = $UserModel->getUser($dataArr['search'],$pageNum,$page);
+            $danmuRes = $UserModel->getDanmu($dataArr['search'],$pageNum,$page);
 
         }
 

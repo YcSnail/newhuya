@@ -289,13 +289,14 @@
                 var list = '';
 
                 var danmuList = data.data;
+                var username = data.username;
 
                 for (var i=0;i<danmuList.length;i++){
 
                     list +=
                         '<li>' +
-                        '    <span class="danmu-span danmu-time">'+danmuList[i]['create_time']+'</span>' +
-                        '    <span class="danmu-span danmu-name">'+danmuList[i]['username']+':</span>' +
+                        '    <span class="danmu-span danmu-time">'+danmuList[i]['send_time']+'</span>' +
+                        '    <span class="danmu-span danmu-name">'+username+':</span>' +
                         '    <span class="danmu-span danmu-text">'+danmuList[i]['content']+'</span>' +
                         '</li>';
                 }
@@ -390,7 +391,7 @@
 
             setTimeout(function(){
                 layer.close(index);
-            }, 5000);
+            }, 50000);
 
         }
 

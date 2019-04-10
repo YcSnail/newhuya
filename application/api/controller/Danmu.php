@@ -143,39 +143,6 @@ class Danmu extends Controller {
 
 
     /**
-     * 检查过滤弹幕
-     * @param $content
-     * @return bool
-     */
-    private function checkDanmu($content){
-
-        if (empty($content)){
-            return false;
-        }
-
-        if (strlen($content) <=3){
-            return false;
-        }
-
-        $checkArr = ['分享了直播间','hahaha','哈哈哈','2333','6666','牛逼','收','高能预警',
-            '前方高能反应','????','....','。。。。','支付宝','QQ','qq','？？？？','3333','¿¿¿¿','/{','激动的心'];
-
-        $resCount = $content;
-
-        for ($i=0;$i<count($checkArr);$i++){
-
-            if (strstr($content,$checkArr[$i]) !== false){
-                $resCount = false;
-                break;
-            }
-
-        }
-
-        return $resCount;
-    }
-
-
-    /**
      * 检查数据库中 是否存在重复数据
      * @param $id
      * @return bool
@@ -207,12 +174,6 @@ class Danmu extends Controller {
         foreach ($arr as $itemArr) {
             $tmpArr = [];
 
-            // 检查弹幕是否为无用弹幕
-            $checkCount = $this->checkDanmu($itemArr['content']);
-
-            if ($checkCount == false){
-                continue;
-            }
 
             $tmpArr['username'] = $itemArr['username'];
             $tmpArr['content'] = $itemArr['content'];
