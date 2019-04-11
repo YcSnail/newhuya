@@ -33,6 +33,8 @@ class AdminUser extends Model{
         $danmuObj['total'] = $total[0]['count(id)'];
         $danmuObj['username'] = $userName;
         // 获取指定用户的弹幕数据
+
+        $page = ( $page -1 ) * $pageNum;
         $danmuObj['data'] = $this->getDanmuList($userId,$pageNum,$page);
 
         return $danmuObj;
