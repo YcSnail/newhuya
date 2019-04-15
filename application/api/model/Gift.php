@@ -9,6 +9,7 @@
 
 
 namespace app\api\model;
+use think\Db;
 use think\Model;
 
 
@@ -27,10 +28,7 @@ class Gift  extends Model{
 
     public function getGift($id){
 
-        $res = Gift::where('gift_id', $id)
-            ->find()
-            ->limit(1);
-        return $res;
+        return Db::query('SELECT id FROM hy_gift where gift_id=:gift_id limit 1',['gift_id'=>$id]);
     }
 
     public function GiftReal(){
