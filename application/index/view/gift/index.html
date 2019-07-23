@@ -46,6 +46,7 @@
         color: #FF5722;
         display: inline-block;
         width: 400px;
+        margin-left: 20px;
     }
 
     .gift_time{
@@ -206,7 +207,6 @@ layui.use(['element', 'form', 'layer', 'laypage'], function () {
                 giftList +=
                     '<li class="gift-item">' +
                     '    <span class="layui-badge list-num">'+(i+1)+'</span>' +
-                    '    <span class="gift_time">'+giftData[i]['gift_time']+'</span>' +
                     '    <span class="username">'+giftData[i]['username']+'</span>' +
                     '    <span class="gift-num">'+totals+'金豆</span>' +
                     '</li>';
